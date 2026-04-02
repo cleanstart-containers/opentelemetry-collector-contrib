@@ -60,7 +60,7 @@ Run the container with basic configuration and volume mount
 ```bash
 docker run -it --name opentelemetry-collector-contrib \
   -v $(pwd)/otel-config.yaml:/etc/otel/config.yaml \
-  public.ecr.aws/cleanstart/opentelemetry-collector-contrib:latest \
+  ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest \
   --config /etc/otel/config.yaml
 ```
 
