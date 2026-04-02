@@ -4,37 +4,25 @@ The CleanStart Opentelemetry-Collector-Contrib image provides a production-ready
 
 📌 **Base Foundation**: Production-ready container from cleanstart.
 
-**Image Path**: `public.ecr.aws/your-alias/opentelemetry-collector-contrib`
+**Image Path**: `ghcr.io/cleanstart-containers/opentelemetry-collector-contrib`
+
 **Registry**: cleanstart Registry
-
-## Key Features
-Core capabilities and strengths of this container
-
-
-
-## Common Use Cases
-Typical scenarios where this container excels
-
-
 
 ## Pull Latest Image
 Download the container image from the registry
 
 ```bash
-docker pull public.ecr.aws/your-alias/opentelemetry-collector-contrib:opentelemetry-collector-contrib
+docker pull ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest
 ```
 ```bash
-docker pull public.ecr.aws/your-alias/opentelemetry-collector-contrib:container
-```
-```bash
-docker pull public.ecr.aws/your-alias/opentelemetry-collector-contrib:enterprise
+docker pull ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest-dev
 ```
 
 ## Basic Run
 Run the container with basic configuration
 
 ```bash
-docker run -it --name opentelemetry-collector-contrib public.ecr.aws/your-alias/opentelemetry-collector-contrib:latest
+docker run -it --name opentelemetry-collector-contrib ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest
 ```
 
 ## Production Deployment
@@ -45,19 +33,19 @@ docker run -d --name opentelemetry-collector-contrib-prod \
   --security-opt=no-new-privileges \
   --user 1000:1000 \
   --restart unless-stopped \
-  public.ecr.aws/your-alias/opentelemetry-collector-contrib:latest
+  ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest
 ```
 
 Volume Mount Mount local directory for persistent data
 
 ```bash
-docker run -v /app:/app public.ecr.aws/your-alias/opentelemetry-collector-contrib:latest
+docker run -v /app:/app ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest
 ```
 
 Port Forwarding Run with custom port mappings
 
 ```bash
-docker run -p 8080:8080 public.ecr.aws/your-alias/opentelemetry-collector-contrib:latest
+docker run -p 8080:8080 ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest
 ```
 
 ## Environment Variables
@@ -67,10 +55,6 @@ Configuration options available through environment variables
 |----------|---------|-------------|
 | ENV | production | Environment mode |
 | LOG_LEVEL | info | Logging level |
-
-## Security Best Practices
-Recommended security configurations and practices
-
 
 
 ## Kubernetes Security Context
@@ -92,7 +76,7 @@ Essential links and resources for further information
 
 - **Container Registry**: [https://www.cleanstart.com/](https://www.cleanstart.com/)
 - **CleanStart Community Images**: [https://hub.docker.com/u/cleanstart](https://hub.docker.com/u/cleanstart)
-- **How-to-Run CleanStart images & sample projects**: [https://github.com/cleanstart-dev/cleanstart-containers](https://github.com/cleanstart-dev/cleanstart-containers)
+- **How-to-Run CleanStart images & sample projects**: [https://github.com/cleanstart-containers](https://github.com/cleanstart-containers)
   - How to run sample projects using Dockerfile
   - How to deploy via Kubernetes YAML
   - How to migrate from public images to CleanStart images
