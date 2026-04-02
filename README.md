@@ -18,34 +18,81 @@ docker pull ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest
 docker pull ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest-dev
 ```
 
-## Basic Run
-Run the container with basic configuration
+## Basic config file
+Create config file (vi otel-config.yaml)
 
 ```bash
-docker run -it --name opentelemetry-collector-contrib ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+
+exporters:
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug]
+```
+
+
+## Basic Run
+Run the container with basic configuration and volume mount
+
+```bash
+docker run -it --name opentelemetry-collector-contrib \
+  -v $(pwd)/otel-config.yaml:/etc/otel/config.yaml \
+  public.ecr.aws/cleanstart/opentelemetry-collector-contrib:latest \
+  --config /etc/otel/config.yaml
 ```
 
 ## Production Deployment
 Deploy with production security settings
 
 ```bash
-docker run -d --name opentelemetry-collector-contrib-prod \
+docker run -d \
+  --name opentelemetry-collector-contrib-prod \
   --security-opt=no-new-privileges \
   --user 1000:1000 \
   --restart unless-stopped \
-  ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest
-```
-
-Volume Mount Mount local directory for persistent data
-
-```bash
-docker run -v /app:/app ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest
+  -v /app:/app \
+  -v $(pwd)/otel-config.yaml:/etc/otel/config.yaml:ro \
+  ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest \
+  --config /etc/otel/config.yaml
 ```
 
 Port Forwarding Run with custom port mappings
 
 ```bash
-docker run -p 8080:8080 ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest
+docker run --name opentelemetry-collector-contrib-prod \
+  --security-opt=no-new-privileges \
+  --user 1000:1000 \
+  --restart unless-stopped \
+  -p 4317:4317 \
+  -p 4318:4318 \
+  -p 8888:8888 \
+  -v /app:/app \
+  -v $(pwd)/otel-config.yaml:/etc/otel/config.yaml:ro \
+  ghcr.io/cleanstart-containers/opentelemetry-collector-contrib:latest \
+  --config /etc/otel/config.yaml
 ```
 
 ## Environment Variables
